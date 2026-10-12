@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import PageTitle from '../../components/page-title.jsx';
+import Layout from '../../components/layout.jsx';
 function Categories() {
 
   const [categories, setCategories] = React.useState([]);
@@ -33,7 +34,7 @@ function handleDelete(id) {
 }
 
   return (
-    <div className ="main" id="main">
+    <Layout>
       <PageTitle title="Categories" parent="Categories" current="Categories" />
       <div className="row">
         <div className="col-md-12">
@@ -82,8 +83,10 @@ function handleDelete(id) {
                             <thead>
                               <tr>
                                 <th>#</th>
+                                <th>Icon</th>
                                 <th>Category Name</th>
                                 <th>Description</th>
+                                <th>Slug</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
@@ -95,30 +98,33 @@ function handleDelete(id) {
                                 <tr key={category.id}>
 
                                   <td>{index + 1}</td>
+                                  <td>
+                                    <img src={`${import.meta.env.VITE_API_URL}${category.icon}`} alt={category.name} width="30" />
+                                  </td>
 
                                   <td>
                                     <strong>{category.name}</strong>
                                   </td>
 
                                   <td>{category.description}</td>
-
+                                  <td>{category.slug}</td>
                                   <td>
-
                                     <div className="form-button-action">
 
                                       <Link to={`/categories/edit/${category.id}`}
-                                        className="btn btn-link btn-primary"
+                                        className="btn btn-link btn-light"
                                         title="Edit"
                                       >
-                                        <i className="fa fa-edit"></i>
+                                        <i className="fa-solid fa-pen-to-square"></i>
+
                                       </Link>
 
                                       <button
-                                        className="btn btn-link btn-danger"
+                                        className="btn btn-link btn-light"
                                         title="Delete"
                                         onClick={() => handleDelete(category.id)}
                                       >
-                                        <i className="fa fa-trash"></i>
+                                        <i className="fa-solid fa-trash text-danger"></i>
                                       </button>
                                     </div>
                                   </td>
@@ -131,7 +137,7 @@ function handleDelete(id) {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

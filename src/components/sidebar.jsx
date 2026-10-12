@@ -87,7 +87,25 @@ function Sidebar() {
           <span>Jobs</span>
         </Link>
       </li>
-      
+      <li className="nav-item">
+        <Link className="nav-link collapsed" to="/companies">
+          <i className="bi bi-grid"></i>
+          <span>Companies</span>
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link collapsed" to="/register">
+          <i className="bi bi-card-list"></i>
+          <span>Register</span>
+        </Link>
+      </li>
+
+      <li className="nav-item">
+        <Link className="nav-link collapsed" to="/login">
+          <i className="bi bi-box-arrow-in-right"></i>
+          <span>Login</span>
+        </Link>
+      </li>
       <li className="nav-item">
         <Link className="nav-link collapsed" to="/blank">
           <i className="bi bi-file-earmark"></i>

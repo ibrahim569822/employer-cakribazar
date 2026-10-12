@@ -1,8 +1,8 @@
 import PageTitle from "../components/page-title.jsx";
+import Layout from "../components/layout.jsx";
 function Profile() {
     return (
-        <main id="main" className="main">
-            
+        <Layout>
             <PageTitle title="Profile" parent="Users" current="Profile" />
 
             <section className="section profile">
@@ -283,7 +283,7 @@ function Profile() {
                 </div>
             </section>
 
-         </main>
+         </Layout>
          );
 }
 

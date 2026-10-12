@@ -1,55 +1,75 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link,useParams } from 'react-router';
 import PageTitle from '../../components/page-title.jsx';
-function CategoryCreate() {
+import axios from '../../Lib/axios.js';
+import Layout from '../../components/layout.jsx';
 
-  function handleSubmit(e){
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-    
-    fetch('http://localhost/cakribazar/category/create.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        // Optionally, you can redirect the user to another page or show a success message here
-        window.location.href = '/categories';
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+function CategoryCreate() {
+   const [category, setCategory] = React.useState({'id':0,'name':'','icon':'','description':'','slug':''});
+
+  let { id } = useParams();
+  const [message, setMessage] = React.useState("");
+  const fetchCategory = async (e) => {
+    let res= await axios.get('category/single.php?id='+id)
+    setCategory(res?.data?.data[0])
   }
 
+  React.useEffect(() => {
+    if(id)
+      fetchCategory();
+  }
+, []);
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    
+    let url = '';
+    if (id) {
+        url = 'category/update.php?id=' + id;
+    } else {
+        url = 'category/create.php';
+    }
+    let response = await axios.post(url, formData);
+
+    window.location.href = '/categories';
+  };
 
   return (
-    <div className="main" id="main">
-      <PageTitle title="Create Category" parent="Categories" current="Create" />
-    <div className="container">
+    <Layout>
+      <PageTitle title={id ? "Update Category" : "Create Category"} parent="Categories" current={id ? "Update" : "Create"} />
+    <div className="container mt-4">
       <div className="page-inner">
-
-
         {/* Card */}
         <div className="row">
           <div className="col-md-12">
             <div className="card card-round">
 
-              <div className="card-body">
-                <form onSubmit={handleSubmit}>
-                  <div className="form-group">
+              <div className="card-body p-4">
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <div className="form-group mb-3">
+                    <label htmlFor="categoryIcon">Category Icon</label>
+                    <input type="file" name="icon" className="form-control" id="categoryIcon" />
+                  </div>
+                  <div className="form-group mb-3">
                     <label htmlFor="categoryName">Category Name</label>
-                    <input type="text" name="name" className="form-control" id="categoryName" placeholder="Enter category name" />
+                    <input type="text" onChange={(e) => setCategory({...category, name: e.target.value})} value={category.name} name="name" className="form-control" id="categoryName" placeholder="Enter category name" />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group mb-3">
                     <label htmlFor="categoryDescription">Category Description</label>
-                    <input type="text" name="description" className="form-control" id="categoryDescription" placeholder="Enter category description" />
+                    <input type="text" onChange={(e) => setCategory({...category, description: e.target.value})} value={category.description} name="description" className="form-control" id="categoryDescription" placeholder="Enter category description" />
                   </div>
-                  <button type="submit" className="btn btn-primary mt-3">Add Category</button>
+                  <div className="form-group mb-3">
+                    <label htmlFor="slug">Category Slug</label>
+                    <input type="text" onChange={(e) => setCategory({...category, slug: e.target.value})} value={category.slug} name="slug" className="form-control" id="slug" placeholder="Enter category slug" />
+                  </div>
+                  {id ? (<button type="submit" className="btn btn-primary mt-3">Update Category</button>) : (<button type="submit" className="btn btn-primary mt-3">Add Category</button>) }
+                  
+                  {message && (
+                    <div className="mt-3">
+                      <p className={message.includes("successfully") ? "text-success" : "text-danger"}>{message}</p> 
+                    </div>
+                  )}
                 </form>
               </div>
             </div>
@@ -58,7 +78,7 @@ function CategoryCreate() {
 
       </div>
     </div>
-  </div>
+  </Layout>
   );
 }
 
