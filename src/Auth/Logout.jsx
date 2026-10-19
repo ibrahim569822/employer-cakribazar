@@ -1,5 +1,6 @@
 export default function Logout() {
-    sessionStorage.removeItem("access_token");
+    localStorage.removeItem("access_token");
+    //console.log(localStorage.getItem("access_token"));
     window.location.href = "/login";
     return null;
 }

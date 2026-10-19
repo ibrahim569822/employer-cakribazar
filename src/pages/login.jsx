@@ -1,8 +1,9 @@
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 import { useState } from "react";
 import axios from "axios";
 function LogIn() {
     const [message, setMessage] = useState("");
+     const [messageType, setMessageType] = useState("");
     const handleSubmit = (event) => {
         event.preventDefault();
         // Handle form submission logic here
@@ -13,12 +14,18 @@ function LogIn() {
                 username: form.get("username"),
                 password: form.get("password")
             })
-            .then((response) => {
-                // Handle successful login
-                sessionStorage.setItem("access_token", response.data.jwt);
-                sessionStorage.setItem("userdata", response.data.data);
-                window.location.href = './';
-            })
+           .then((response) => {
+          if (response.data.status == false) {
+            setMessage("Invalid email or password.");
+            setMessageType('danger')
+            
+          } else {
+            localStorage.setItem("access_token", response.data.jwt);
+            localStorage.setItem("userdata", response.data.data);
+        
+            window.location.href = '/';
+          }
+      })
             .catch(() => {
 
                 setMessage("Invalid username or password.");

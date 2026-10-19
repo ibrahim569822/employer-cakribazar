@@ -22,7 +22,8 @@ function Register() {
             username: form.get("username"),
             email: form.get("email"),
             contact: form.get("contact"),
-            password: form.get("password")
+            password: form.get("password"),
+            role: form.get("role"),
         })
         .then(()=> {
             setMessage("Account created successfully. You can now sign in.");
@@ -59,6 +60,7 @@ function Register() {
                             </div>
 
                             <form onSubmit={handleSubmit} className="row g-3 needs-validation">
+                                <input type="hidden" name="role" value="3" />
 
                                 <div className="col-12">
                                 <label htmlFor="yourName" className="form-label">Your Name</label>

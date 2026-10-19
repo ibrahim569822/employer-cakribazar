@@ -2,15 +2,15 @@ import React from 'react';
 import { Link } from 'react-router';
 import PageTitle from '../../components/page-title.jsx';
 import Layout from '../../components/layout.jsx';
+import axios from '../../Lib/axios.js'
 function Companies() {
 
   const [company, setCompany] = React.useState([]);
 
   function fetchCompany() {
-    fetch('http://localhost/cakribazar/companies/index.php')
-      .then(response => response.json())
-      .then(data => setCompany(data.data))
-      .catch(error => console.error('Error fetching companies:', error));
+    axios.get('/companies/index.php')
+  .then(response => setCompany(response.data.data))
+  .catch(error => console.error('Error fetching companies:', error));
   }
 
   React.useEffect(() => {

@@ -9,12 +9,33 @@ function JobsCreate() {
 
   let { id } = useParams();
   const [message, setMessage] = React.useState("");
+  const [companies, setCompanies] = React.useState([]);
   const fetchJob = async (e) => {
     let res= await axios.get('jobs/single.php?id='+id)
     setJob(res?.data?.data[0])
   }
-
+  const fetchCompanies = async () => {
+  try {
+    const res = await axios.get('companies/index.php');
+    console.log('companies response:', res.data);
+    setCompanies(res?.data?.data ?? []);
+  } catch (error) {
+    console.error('Error fetching companies:', error);
+  }
+};
+const [categories, setCategories] = React.useState([]);
+const fetchCategories = async () => {
+  try {
+    const res = await axios.get('category/index.php'); 
+    console.log('categories response:', res.data);
+    setCategories(res?.data?.data ?? []);
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+  }
+};
   React.useEffect(() => {
+    fetchCompanies();
+    fetchCategories();
     if(id)
       fetchJob();
   }
@@ -55,16 +76,26 @@ function JobsCreate() {
                   <div className="row">
                     <div className="col-md-6 form-group mb-3">
                       <label htmlFor="company_id">Company</label>
-                      <input type="text" name="company_id" id="company_id" className="form-control"
+                      <select name="company_id" id="company_id" className="form-select"
                         value={job.company_id}
-                        onChange={(e) => setJob({ ...job, company_id: e.target.value })} /> 
+                        onChange={(e) => setJob({ ...job, company_id: e.target.value })}>
+                        <option value="">Select a company</option>
+                        {companies.map((company) => (
+                          <option key={company.id} value={company.id}>{company.name}</option>
+                        ))}
+                      </select>
                     </div>
 
                     <div className="col-md-6 form-group mb-3">
                       <label htmlFor="category_id">Category</label>
-                      <input type="text" name="category_id" id="category_id" className="form-control"
+                      <select name="category_id" id="category_id" className="form-select"
                         value={job.category_id}
-                        onChange={(e) => setJob({ ...job, category_id: e.target.value })} />
+                        onChange={(e) => setJob({ ...job, category_id: e.target.value })}>
+                        <option value="">Select a category</option>
+                        {categories.map((category) => (
+                          <option key={category.id} value={category.id}>{category.name}</option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 
@@ -103,11 +134,16 @@ function JobsCreate() {
 
                     <div className="col-md-6 form-group mb-3">
                       <label htmlFor="job_type">Job Type</label>
-                      <input type="text" name="job_type" id="job_type" className="form-control" maxLength={50}
-                        placeholder="Enter job type"
+                      <select name="job_type" id="job_type" className="form-select"
                         value={job.job_type}
-                        onChange={(e) => setJob({ ...job, job_type: e.target.value })} />
-                    
+                        onChange={(e) => setJob({ ...job, job_type: e.target.value })}>
+                        <option value="">Select job type</option>
+                        <option value="1">Full Time</option>
+                        <option value="2">Part Time</option>
+                        <option value="3">Contract</option>
+                        <option value="4">Internship</option>
+                        <option value="5">Remote</option>
+                      </select>
                     </div>
                   </div>
 

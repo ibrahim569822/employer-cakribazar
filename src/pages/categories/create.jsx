@@ -25,6 +25,7 @@ function CategoryCreate() {
     const formData = new FormData(e.target);
     
     let url = '';
+    
     if (id) {
         url = 'category/update.php?id=' + id;
     } else {

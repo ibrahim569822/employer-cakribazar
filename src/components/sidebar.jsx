@@ -88,6 +88,12 @@ function Sidebar() {
         </Link>
       </li>
       <li className="nav-item">
+        <Link className="nav-link collapsed" to="/applications">
+          <i className="bi bi-grid"></i>
+          <span>Applications</span>
+        </Link>
+      </li>
+      <li className="nav-item">
         <Link className="nav-link collapsed" to="/companies">
           <i className="bi bi-grid"></i>
           <span>Companies</span>
